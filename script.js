@@ -1,35 +1,3 @@
-// const text = [
-//   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos eveniet voluptates possimus dolores quod est nostrum sapiente repellat maiores. Rerum corporis veritatis doloribus dolore impedit doloremque blanditiis placeat omnis voluptates aspernatur facilis, amet cumque? Ipsa laboriosam deleniti, exercitationem id fugiat assumenda itaque facilis dicta rem ex? Asperiores consectetur id error.",
-// ];
-// const words = text[0].split("");
-// words.forEach(word => {
-//   paragraph.innerHTML += `<span>${word}</span>`;
-// });
-// textwritting.addEventListener("keyup", e => {
-//   let textval = textwritting.value;
-//   let guess = "";
-//   for (let i = 0; i < textval.length; i++) {
-//     if (textval[i] == text[0][i]) {
-//       paragraph.childNodes[i].classList.remove("wrong");
-//       paragraph.childNodes[i].classList.add("correct");
-//       guess += text[0][i];
-//     } else {
-//       paragraph.childNodes[i].classList.add("wrong");
-//       paragraph.childNodes[i].classList.remove("correct");
-//       guess = "";
-//     }
-//   }
-//   if (e.key == "Backspace") {
-//     for (let i = guess.length; i < paragraph.childElementCount; i++) {
-//       paragraph.childNodes[i].classList.remove("correct", "wrong");
-//     }
-//   }
-//   if (textval == "") {
-//     for (let i = 0; i < paragraph.childElementCount; i++) {
-//       paragraph.childNodes[i].classList.remove("correct", "wrong");
-//     }
-//   }
-// });
 const textwritting = document.getElementById("textwritting");
 const paragraph = document.getElementById("paragraph");
 const timerUi = document.getElementById("timerUI");
@@ -42,6 +10,7 @@ const paragraphsList = [
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos eveniet voluptates possimus dolores quod est nostrum sapiente repellat maiores. Rerum corporis veritatis doloribus dolore impedit doloremque blanditiis placeat omnis voluptates aspernatur facilis, amet cumque? Ipsa laboriosam deleniti, exercitationem id fugiat assumenda itaque facilis dicta rem ex? Asperiores consectetur id error.",
 ];
 function startRun() {
+  textwritting.value = "";
   // generate random number
   let randomNum = Math.floor(Math.random() * paragraphsList.length);
   const words = paragraphsList[randomNum].split("");
@@ -101,11 +70,20 @@ function startRun() {
     // wpm calculator(words per minute)
     let wpm = wordsCount.length / (minutes + seconds / 60);
     // round to 2 decimals
+    setInterval(() => {
+      let wpm2 = wordsCount.length / (minutes + seconds / 60);
+      wpmDisplay.innerHTML = Math.round(wpm2 * 100) / 100;
+    }, 3500);
     wpmDisplay.innerHTML = Math.round(wpm * 100) / 100;
+    // end the session if all letters are correct
+    if (paragraphsList[randomNum] == guess) {
+      alert(`Your WPM was ${wpm} words per minute.`);
+      if (window.confirm){
+        location.reload()
+      }
+    }
   });
 }
-startRun();
-// make start button
-// make restart button
-// when finished tell wpn plus play again smth like that
-// make it look nicer
+function restart() {
+  location.reload();
+}
